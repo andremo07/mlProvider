@@ -4,9 +4,9 @@ import com.ning.http.client.FluentCaseInsensitiveStringsMap;
 import com.ning.http.client.FluentStringsMap;
 import com.ning.http.client.Response;
 
-import br.com.trendsoftware.mlClient.exception.MessageException;
-import br.com.trendsoftware.mlClient.exception.RestClientException;
-import br.com.trendsoftware.mlClient.exception.ServiceException;
+import br.com.trendsoftware.restProvider.exception.MessageException;
+import br.com.trendsoftware.restProvider.exception.RestClientException;
+import br.com.trendsoftware.restProvider.exception.ServiceException;
 
 public class OrderService extends MlService{
 	

@@ -28,7 +28,7 @@
 
 		<dependency>
 			<groupId>br.com.trendsoftware</groupId>
-			<artifactId>mlClient</artifactId>
+			<artifactId>restProvider</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
