@@ -1,6 +1,6 @@
 package br.com.trendsoftware.mlProvider.http.client;
 
-import br.com.trendsoftware.mlClient.http.client.RestClient;
+import br.com.trendsoftware.restProvider.http.client.RestClient;
 
 public class MeliClient extends RestClient{
 

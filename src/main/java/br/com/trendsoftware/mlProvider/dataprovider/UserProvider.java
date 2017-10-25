@@ -4,14 +4,14 @@ import java.io.IOException;
 
 import org.apache.commons.httpclient.HttpStatus;
 
-import br.com.trendsoftware.mlClient.exception.MessageException;
-import br.com.trendsoftware.mlClient.exception.ProviderException;
-import br.com.trendsoftware.mlClient.exception.ServiceException;
-import br.com.trendsoftware.mlClient.util.ExceptionUtil;
 import br.com.trendsoftware.mlProvider.dto.Error;
 import br.com.trendsoftware.mlProvider.exception.AuthorizationException;
 import br.com.trendsoftware.mlProvider.response.Response;
 import br.com.trendsoftware.mlProvider.service.UserService;
+import br.com.trendsoftware.restProvider.exception.MessageException;
+import br.com.trendsoftware.restProvider.exception.ProviderException;
+import br.com.trendsoftware.restProvider.exception.ServiceException;
+import br.com.trendsoftware.restProvider.util.ExceptionUtil;
 
 public class UserProvider extends MlProvider{
 

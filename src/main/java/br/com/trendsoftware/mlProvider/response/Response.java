@@ -2,7 +2,7 @@ package br.com.trendsoftware.mlProvider.response;
 
 import java.io.IOException;
 
-import br.com.trendsoftware.mlClient.response.RestResponse;
+import br.com.trendsoftware.restProvider.response.RestResponse;
 
 public class Response extends RestResponse
 {	

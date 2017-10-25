@@ -7,11 +7,11 @@ import java.net.URLEncoder;
 import com.ning.http.client.FluentStringsMap;
 import com.ning.http.client.Response;
 
-import br.com.trendsoftware.mlClient.exception.MessageException;
-import br.com.trendsoftware.mlClient.exception.RestClientException;
-import br.com.trendsoftware.mlClient.exception.ServiceException;
 import br.com.trendsoftware.mlProvider.exception.AuthorizationException;
 import br.com.trendsoftware.mlProvider.http.client.MeliClient.AuthUrls;
+import br.com.trendsoftware.restProvider.exception.MessageException;
+import br.com.trendsoftware.restProvider.exception.RestClientException;
+import br.com.trendsoftware.restProvider.exception.ServiceException;
 
 public class UserService extends MlService{
 
