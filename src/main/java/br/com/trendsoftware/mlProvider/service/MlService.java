@@ -2,23 +2,24 @@ package br.com.trendsoftware.mlProvider.service;
 
 import org.apache.log4j.Logger;
 
-import br.com.trendsoftware.mlProvider.http.client.Meli;
+import br.com.trendsoftware.mlProvider.http.client.MeliClient;
 
 
 public class MlService {
 	
-	protected Meli meli;
+	protected MeliClient meli;
 	
 	private Logger logger;
 	
 	public MlService(){
+		meli=new MeliClient();
 	}
 
-	public Meli getMeli() {
+	public MeliClient getMeli() {
 		return meli;
 	}
 
-	public void setMeli(Meli meli) {
+	public void setMeli(MeliClient meli) {
 		this.meli = meli;
 	}
 	

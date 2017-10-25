@@ -5,11 +5,11 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpStatus;
 
 import br.com.trendsoftware.mlClient.exception.MessageException;
-import br.com.trendsoftware.mlClient.exception.MlServiceException;
+import br.com.trendsoftware.mlClient.exception.ServiceException;
 import br.com.trendsoftware.mlClient.exception.ProviderException;
-import br.com.trendsoftware.mlClient.ml.dto.Error;
-import br.com.trendsoftware.mlClient.ml.dto.OrderStatus;
 import br.com.trendsoftware.mlClient.util.ExceptionUtil;
+import br.com.trendsoftware.mlProvider.dto.OrderStatus;
+import br.com.trendsoftware.mlProvider.dto.Error;
 import br.com.trendsoftware.mlProvider.response.Response;
 import br.com.trendsoftware.mlProvider.service.OrderService;
 
@@ -38,8 +38,12 @@ public class OrderProvider extends MlProvider{
 			com.ning.http.client.Response response = orderService.getOrderById(orderId,accessToken);
 			
 			if(response.getStatusCode()!=HttpStatus.SC_OK){
-				Error error = getParser().fromJson(response.getResponseBody(), Error.class);
-				throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
+				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
+				}
+				else
+					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
 			}
 
 			long after = System.currentTimeMillis();
@@ -48,7 +52,7 @@ public class OrderProvider extends MlProvider{
 
 			return Response.getPrototype(response, after - before);
 
-		} catch (MlServiceException e) {
+		} catch (ServiceException e) {
 			getLogger().error(ExceptionUtil.getStackTrace(e));
 			throw new ProviderException(MessageException.GENERAL_ERROR);
 		}
@@ -69,8 +73,12 @@ public class OrderProvider extends MlProvider{
 			com.ning.http.client.Response response = orderService.getOrdersByDate(sellerId,fromDt,toDate,orderStatus.getName(),page.toString(),accessToken);
 			
 			if(response.getStatusCode()!=HttpStatus.SC_OK){
-				Error error = getParser().fromJson(response.getResponseBody(), Error.class);
-				throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
+				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
+				}
+				else
+					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
 			}
 
 			long after = System.currentTimeMillis();
@@ -79,7 +87,7 @@ public class OrderProvider extends MlProvider{
 
 			return Response.getPrototype(response, after - before);
 
-		} catch (MlServiceException e) {
+		} catch (ServiceException e) {
 			getLogger().error(ExceptionUtil.getStackTrace(e));
 			throw new ProviderException(MessageException.GENERAL_ERROR);
 		}
@@ -100,8 +108,12 @@ public class OrderProvider extends MlProvider{
 			com.ning.http.client.Response response = orderService.getRecentOrders(sellerId,accessToken);
 			
 			if(response.getStatusCode()!=HttpStatus.SC_OK){
-				Error error = getParser().fromJson(response.getResponseBody(), Error.class);
-				throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
+				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
+				}
+				else
+					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
 			}
 
 			long after = System.currentTimeMillis();
@@ -110,7 +122,7 @@ public class OrderProvider extends MlProvider{
 
 			return Response.getPrototype(response, after - before);
 
-		} catch (MlServiceException e) {
+		} catch (ServiceException e) {
 			getLogger().error(ExceptionUtil.getStackTrace(e));
 			throw new ProviderException(MessageException.GENERAL_ERROR);
 		}

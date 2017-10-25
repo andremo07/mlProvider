@@ -9,11 +9,7 @@ public abstract class MlProvider
 	private Logger logger;
 	
 	private Gson parser;
-	
-	protected Long clientId;
-	
-	protected String clientSecret;
-	
+		
 	public MlProvider(){
 		parser = new Gson();
 	}
@@ -34,22 +30,6 @@ public abstract class MlProvider
 		this.parser = parser;
 	}
 	
-	public Long getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
-	}
-
-	public String getClientSecret() {
-		return clientSecret;
-	}
-
-	public void setClientSecret(String clientSecret) {
-		this.clientSecret = clientSecret;
-	}
-
 	protected abstract void initializeService();
 	
 }
