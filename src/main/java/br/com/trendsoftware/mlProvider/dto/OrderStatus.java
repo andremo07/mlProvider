@@ -2,12 +2,13 @@ package br.com.trendsoftware.mlProvider.dto;
 
 public enum OrderStatus {
 
-		TREND_STORE("TrendStore"),
-		B2W("B2W"),
-		MERCADO_LIVRE("MercadoLivre"),
-		MAGENTO("Magento"),
-		CNOVA("Cnova"),
-		AMAZON("Amazon");
+		CONFIRMED("confirmed"),
+		PAYMENT_REQUIRED("payment_required"),
+		PAYMENT_IN_PROCESS("payment_in_process"),
+		PARTIALLY_PAID("partially_paid"),
+		PAID("paid"),
+		CANCELLED("cancelled"),
+		INVALID("invalid");
 		
 		private String name;
 
