@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import br.com.trendsoftware.restProvider.response.RestResponse;
 
-public class Response extends RestResponse
+public class Response<T> extends RestResponse
 {	
+	private T data;
+	
 	public boolean isResponseOK() {
 		return getStatusCode().equals(200);
 	}
@@ -21,6 +23,14 @@ public class Response extends RestResponse
 		mlReponse.setTimeLapsed(timeLapsed);
 		
 		return mlReponse;
+	}
+
+	public T getData() {
+		return data;
+	}
+
+	public void setData(T data) {
+		this.data = data;
 	}
 	
 }
