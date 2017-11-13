@@ -22,7 +22,7 @@ public class ReceiverAddress {
     private String streetNumber;
     @SerializedName("comment")
     @Expose
-    private Object comment;
+    private String comment;
     @SerializedName("zip_code")
     @Expose
     private String zipCode;
@@ -98,11 +98,11 @@ public class ReceiverAddress {
         this.streetNumber = streetNumber;
     }
 
-    public Object getComment() {
+    public String getComment() {
         return comment;
     }
 
-    public void setComment(Object comment) {
+    public void setComment(String comment) {
         this.comment = comment;
     }
 
