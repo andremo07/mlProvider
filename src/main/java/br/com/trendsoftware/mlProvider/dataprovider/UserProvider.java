@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpStatus;
 
 import br.com.trendsoftware.mlProvider.dto.Error;
+import br.com.trendsoftware.mlProvider.dto.User;
+import br.com.trendsoftware.mlProvider.dto.UserToken;
 import br.com.trendsoftware.mlProvider.exception.AuthorizationException;
 import br.com.trendsoftware.mlProvider.response.Response;
 import br.com.trendsoftware.mlProvider.service.UserService;
@@ -34,22 +36,28 @@ public class UserProvider extends MlProvider{
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response response = userService.authorize(String.valueOf(clientId),clientSecret,code,redirectUri);
+			com.ning.http.client.Response rawResponse = userService.authorize(String.valueOf(clientId),clientSecret,code,redirectUri);
 
-			if(response.getStatusCode()!=HttpStatus.SC_OK){
-				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
-					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
+				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(rawResponse.getResponseBody(), Error.class);
 					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
 				}
 				else
-					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
+					throw new ProviderException(rawResponse.getStatusCode()+"-"+rawResponse.getStatusText());
 			}
-
+			
 			long after = System.currentTimeMillis();
+			
+			Response response = Response.getPrototype(rawResponse, after - before);
+			
+			UserToken token = getParser().fromJson(response.getBody(), UserToken.class);
+			
+			response.setData(token);
 
-			getLogger().trace(response.toString());
+			getLogger().trace(rawResponse.toString());
 
-			return Response.getPrototype(response, after - before);
+			return response;
 		}
 		catch (AuthorizationException e) {
 			getLogger().error(ExceptionUtil.getStackTrace(e));
@@ -70,22 +78,28 @@ public class UserProvider extends MlProvider{
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response response = userService.refreshAccessToken(String.valueOf(clientId),clientSecret,refreshToken);
+			com.ning.http.client.Response rawResponse = userService.refreshAccessToken(String.valueOf(clientId),clientSecret,refreshToken);
 
-			if(response.getStatusCode()!=HttpStatus.SC_OK){
-				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
-					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
+				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(rawResponse.getResponseBody(), Error.class);
 					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
 				}
 				else
-					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
+					throw new ProviderException(rawResponse.getStatusCode()+"-"+rawResponse.getStatusText());
 			}
 
 			long after = System.currentTimeMillis();
+			
+			Response response = Response.getPrototype(rawResponse, after - before);
+			
+			UserToken token = getParser().fromJson(response.getBody(), UserToken.class);
+			
+			response.setData(token);
 
 			getLogger().trace(response.toString());
 
-			return Response.getPrototype(response, after - before);
+			return response;
 		}
 		catch (AuthorizationException e) {
 			getLogger().error(ExceptionUtil.getStackTrace(e));
@@ -106,22 +120,28 @@ public class UserProvider extends MlProvider{
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response response = userService.getUserInfo(accessToken);
+			com.ning.http.client.Response rawResponse = userService.getUserInfo(accessToken);
 
-			if(response.getStatusCode()!=HttpStatus.SC_OK){
-				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
-					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
+				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(rawResponse.getResponseBody(), Error.class);
 					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
 				}
 				else
-					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
+					throw new ProviderException(rawResponse.getStatusCode()+"-"+rawResponse.getStatusText());
 			}
 			
 			long after = System.currentTimeMillis();
+			
+			Response response = Response.getPrototype(rawResponse, after - before);
+			
+			User user = getParser().fromJson(response.getBody(), User.class);
+			
+			response.setData(user);
 
 			getLogger().trace(response.toString());
 
-			return Response.getPrototype(response, after - before);
+			return response;
 		}
 		catch (ServiceException e) {
 			getLogger().error(ExceptionUtil.getStackTrace(e));
