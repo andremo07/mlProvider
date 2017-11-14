@@ -1,7 +1,6 @@
 package br.com.trendsoftware.mlProvider.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -20,7 +19,7 @@ public class User implements Serializable
 	
 	@SerializedName("registration_date")
     @Expose
-	private Date dataRegistro;
+	private String dataRegistro;
 
 	@SerializedName("first_name")
     @Expose
@@ -72,11 +71,11 @@ public class User implements Serializable
 		this.apelido = apelido;
 	}
 
-	public Date getDataRegistro() {
+	public String getDataRegistro() {
 		return dataRegistro;
 	}
 
-	public void setDataRegistro(Date dataRegistro) {
+	public void setDataRegistro(String dataRegistro) {
 		this.dataRegistro = dataRegistro;
 	}
 

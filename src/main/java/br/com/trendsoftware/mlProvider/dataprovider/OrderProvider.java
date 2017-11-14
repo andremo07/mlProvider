@@ -1,6 +1,8 @@
 package br.com.trendsoftware.mlProvider.dataprovider;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpStatus;
@@ -81,15 +83,19 @@ public class OrderProvider extends MlProvider{
 		}	
 	}
 	
-	public Response listOrdersByDate(String sellerId, String fromDt, String toDate, OrderStatus orderStatus, Integer page, String accessToken) throws ProviderException {
+	public Response listOrdersByDate(String sellerId, Date fromDt, Date toDate, OrderStatus orderStatus, Integer page, String accessToken) throws ProviderException {
 
 		try {
 
 			getLogger().trace("searching orders from "+fromDt+" to "+toDate);
-
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+			String fromDtString = dateFormat.format(fromDt);
+			String toDateString = dateFormat.format(toDate);
+			
 			long before = System.currentTimeMillis();
 			
-			com.ning.http.client.Response rawResponse = orderService.getOrdersByDate(sellerId,fromDt,toDate,orderStatus.getName(),page.toString(),accessToken);
+			com.ning.http.client.Response rawResponse = orderService.getOrdersByDate(sellerId,fromDtString,toDateString,orderStatus.getName(),page.toString(),accessToken);
 			
 			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
 				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
