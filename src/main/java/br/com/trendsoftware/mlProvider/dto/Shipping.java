@@ -31,7 +31,7 @@ public class Shipping {
     private String status;
     @SerializedName("substatus")
     @Expose
-    private Object substatus;
+    private String substatus;
     @SerializedName("status_history")
     @Expose
     private StatusHistory statusHistory;
@@ -43,16 +43,16 @@ public class Shipping {
     private String lastUpdated;
     @SerializedName("tracking_number")
     @Expose
-    private Object trackingNumber;
+    private String trackingNumber;
     @SerializedName("tracking_method")
     @Expose
-    private Object trackingMethod;
+    private String trackingMethod;
     @SerializedName("service_id")
     @Expose
     private Long serviceId;
     @SerializedName("carrier_info")
     @Expose
-    private Object carrierInfo;
+    private String carrierInfo;
     @SerializedName("sender_id")
     @Expose
     private Long senderId;
@@ -73,22 +73,22 @@ public class Shipping {
     private ShippingOption shippingOption;
     @SerializedName("comments")
     @Expose
-    private Object comments;
+    private String comments;
     @SerializedName("date_first_printed")
     @Expose
-    private Object dateFirstPrinted;
+    private String dateFirstPrinted;
     @SerializedName("market_place")
     @Expose
     private String marketPlace;
     @SerializedName("return_details")
     @Expose
-    private Object returnDetails;
+    private String returnDetails;
     @SerializedName("return_tracking_number")
     @Expose
-    private Object returnTrackingNumber;
+    private String returnTrackingNumber;
     @SerializedName("carrier_id")
     @Expose
-    private Object carrierId;
+    private String carrierId;
     @SerializedName("cost_components")
     @Expose
     private CostComponents costComponents;
@@ -149,11 +149,11 @@ public class Shipping {
         this.status = status;
     }
 
-    public Object getSubstatus() {
+    public String getSubstatus() {
         return substatus;
     }
 
-    public void setSubstatus(Object substatus) {
+    public void setSubstatus(String substatus) {
         this.substatus = substatus;
     }
 
@@ -181,19 +181,19 @@ public class Shipping {
         this.lastUpdated = lastUpdated;
     }
 
-    public Object getTrackingNumber() {
+    public String getTrackingNumber() {
         return trackingNumber;
     }
 
-    public void setTrackingNumber(Object trackingNumber) {
+    public void setTrackingNumber(String trackingNumber) {
         this.trackingNumber = trackingNumber;
     }
 
-    public Object getTrackingMethod() {
+    public String getTrackingMethod() {
         return trackingMethod;
     }
 
-    public void setTrackingMethod(Object trackingMethod) {
+    public void setTrackingMethod(String trackingMethod) {
         this.trackingMethod = trackingMethod;
     }
 
@@ -205,11 +205,11 @@ public class Shipping {
         this.serviceId = serviceId;
     }
 
-    public Object getCarrierInfo() {
+    public String getCarrierInfo() {
         return carrierInfo;
     }
 
-    public void setCarrierInfo(Object carrierInfo) {
+    public void setCarrierInfo(String carrierInfo) {
         this.carrierInfo = carrierInfo;
     }
 
@@ -261,19 +261,19 @@ public class Shipping {
         this.shippingOption = shippingOption;
     }
 
-    public Object getComments() {
+    public String getComments() {
         return comments;
     }
 
-    public void setComments(Object comments) {
+    public void setComments(String comments) {
         this.comments = comments;
     }
 
-    public Object getDateFirstPrinted() {
+    public String getDateFirstPrinted() {
         return dateFirstPrinted;
     }
 
-    public void setDateFirstPrinted(Object dateFirstPrinted) {
+    public void setDateFirstPrinted(String dateFirstPrinted) {
         this.dateFirstPrinted = dateFirstPrinted;
     }
 
@@ -285,27 +285,27 @@ public class Shipping {
         this.marketPlace = marketPlace;
     }
 
-    public Object getReturnDetails() {
+    public String getReturnDetails() {
         return returnDetails;
     }
 
-    public void setReturnDetails(Object returnDetails) {
+    public void setReturnDetails(String returnDetails) {
         this.returnDetails = returnDetails;
     }
 
-    public Object getReturnTrackingNumber() {
+    public String getReturnTrackingNumber() {
         return returnTrackingNumber;
     }
 
-    public void setReturnTrackingNumber(Object returnTrackingNumber) {
+    public void setReturnTrackingNumber(String returnTrackingNumber) {
         this.returnTrackingNumber = returnTrackingNumber;
     }
 
-    public Object getCarrierId() {
+    public String getCarrierId() {
         return carrierId;
     }
 
-    public void setCarrierId(Object carrierId) {
+    public void setCarrierId(String carrierId) {
         this.carrierId = carrierId;
     }
 
