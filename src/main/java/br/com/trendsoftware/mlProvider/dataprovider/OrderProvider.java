@@ -15,6 +15,8 @@ import br.com.trendsoftware.mlProvider.dto.Order;
 import br.com.trendsoftware.mlProvider.dto.OrderItem;
 import br.com.trendsoftware.mlProvider.dto.OrderList;
 import br.com.trendsoftware.mlProvider.dto.OrderStatus;
+import br.com.trendsoftware.mlProvider.dto.ShippingStatus;
+import br.com.trendsoftware.mlProvider.dto.ShippingSubStatus;
 import br.com.trendsoftware.mlProvider.response.Response;
 import br.com.trendsoftware.mlProvider.service.ItemService;
 import br.com.trendsoftware.mlProvider.service.OrderService;
@@ -83,7 +85,7 @@ public class OrderProvider extends MlProvider{
 		}	
 	}
 	
-	public Response listOrdersByDate(String sellerId, Date fromDt, Date toDate, OrderStatus orderStatus, Integer page, String accessToken) throws ProviderException {
+	public Response listOrdersByDate(String sellerId, Date fromDt, Date toDate, OrderStatus orderStatus, Integer offset, Integer limit, String accessToken) throws ProviderException {
 
 		try {
 
@@ -95,7 +97,52 @@ public class OrderProvider extends MlProvider{
 			
 			long before = System.currentTimeMillis();
 			
-			com.ning.http.client.Response rawResponse = orderService.getOrdersByDate(sellerId,fromDtString,toDateString,orderStatus.getName(),page.toString(),accessToken);
+			com.ning.http.client.Response rawResponse = orderService.getOrdersByDate(sellerId,fromDtString,toDateString,orderStatus.getName(),offset.toString(), limit.toString(),accessToken);
+			
+			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
+				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(rawResponse.getResponseBody(), Error.class);
+					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
+				}
+				else
+					throw new ProviderException(rawResponse.getStatusCode()+"-"+rawResponse.getStatusText());
+			}
+
+			long after = System.currentTimeMillis();
+
+			getLogger().trace(rawResponse.toString());
+			
+			Response<OrderList> response = Response.getPrototype(rawResponse, after - before);
+			
+			OrderList orderList = getParser().fromJson(response.getBody(), OrderList.class);
+			
+			List<Order> orders = orderList.getOrders();
+			for(Order order: orders)
+				setOrderItensCompletedInfo(order, accessToken);
+			
+			response.setData(orderList);
+
+			return response;
+
+		} catch (ServiceException e) {
+			getLogger().error(ExceptionUtil.getStackTrace(e));
+			throw new ProviderException(MessageException.GENERAL_ERROR);
+		}
+		catch (IOException e) {
+			getLogger().error(ExceptionUtil.getStackTrace(e));
+			throw new ProviderException(MessageException.BODY_RESPONSE_ERROR);
+		}	
+	}
+	
+	public Response listOrdersByShippingStatus(String sellerId,  ShippingStatus shippingStatus, ShippingSubStatus shippingSubStatus, Integer offset, Integer limit, String accessToken) throws ProviderException {
+
+		try {
+
+			getLogger().trace("searching "+ shippingStatus.getName() + " orders");
+						
+			long before = System.currentTimeMillis();
+			
+			com.ning.http.client.Response rawResponse = orderService.getOrdersByShippingStatus(sellerId,shippingStatus.getName(),shippingSubStatus.getName(),offset.toString(), limit.toString(),accessToken);
 			
 			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
 				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
@@ -181,8 +228,10 @@ public class OrderProvider extends MlProvider{
 		
 		List<OrderItem> ordemItens = order.getOrderItems();
 		for(OrderItem orderItem: ordemItens){	
+			String sku = orderItem.getItem().getSellerCustomField();
 			com.ning.http.client.Response rawResponse = itemService.getItemById(orderItem.getItem().getId(), accessToken);
 			ItemResponse item  = getParser().fromJson(rawResponse.getResponseBody(), ItemResponse.class);
+			item.setSellerCustomField(sku);
 			orderItem.setItem(item);		
 		}
 	

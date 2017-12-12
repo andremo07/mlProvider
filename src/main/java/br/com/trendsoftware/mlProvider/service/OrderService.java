@@ -25,7 +25,7 @@ public class OrderService extends MlService{
 		
 	}
 	
-	public Response getOrdersByDate(String sellerId, String begin, String end, String orderStatus, String offset,String accessToken) throws ServiceException{
+	public Response getOrdersByDate(String sellerId, String begin, String end, String orderStatus, String offset, String limit, String accessToken) throws ServiceException{
 
 		try {
 			FluentStringsMap params = new FluentStringsMap();
@@ -34,6 +34,7 @@ public class OrderService extends MlService{
 			params.add("order.date_created.from", begin);
 			params.add("order.date_created.to", end);
 			params.add("offset", offset);
+			params.add("limit", limit);
 			params.add("access_token", accessToken);
 			params.add("sort", "date_desc");
 			Response response = meli.get("/orders/search",params);
@@ -57,6 +58,24 @@ public class OrderService extends MlService{
 			throw new ServiceException(String.format("%s:%s", MessageException.ERROR_QUERY_ORDER, e.getMessage()), e);
 		}
 		
+	}
+	
+	public Response getOrdersByShippingStatus(String sellerId, String shippingStatus, String shippingSubStatus, String offset, String limit, String accessToken) throws ServiceException{
+		try {
+			FluentStringsMap params = new FluentStringsMap();
+			params.add("seller", sellerId);
+			params.add("access_token", accessToken);
+			params.add("shipping.status", shippingStatus);
+			params.add("shipping.substatus", shippingSubStatus);
+			params.add("offset", offset);
+			params.add("limit", limit);
+			params.add("sort", "date_desc");
+			Response response = meli.get("/orders/search",params);
+			return response;
+		} catch (RestClientException e) {	
+			throw new ServiceException(String.format("%s:%s", MessageException.ERROR_QUERY_ORDER, e.getMessage()), e);
+		}
+
 	}
 	
 	public Response getOrderMessages(String orderId,String accessToken) throws ServiceException{
