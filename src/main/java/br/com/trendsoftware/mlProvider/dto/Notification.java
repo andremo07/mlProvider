@@ -13,7 +13,7 @@ public class Notification {
     private String resource;
     @SerializedName("user_id")
     @Expose
-    private Long userId;
+    private String userId;
     @SerializedName("topic")
     @Expose
     private String topic;
@@ -32,15 +32,15 @@ public class Notification {
         this.resource = resource;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
+    public String getUser_id() {
+		return userId;
+	}
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+	public void setUser_id(String userId) {
+		this.userId = userId;
+	}
 
-    public String getTopic() {
+	public String getTopic() {
         return topic;
     }
 
