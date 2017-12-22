@@ -15,11 +15,13 @@ import br.com.trendsoftware.mlProvider.dto.Order;
 import br.com.trendsoftware.mlProvider.dto.OrderItem;
 import br.com.trendsoftware.mlProvider.dto.OrderList;
 import br.com.trendsoftware.mlProvider.dto.OrderStatus;
+import br.com.trendsoftware.mlProvider.dto.Shipping;
 import br.com.trendsoftware.mlProvider.dto.ShippingStatus;
 import br.com.trendsoftware.mlProvider.dto.ShippingSubStatus;
 import br.com.trendsoftware.mlProvider.response.Response;
 import br.com.trendsoftware.mlProvider.service.ItemService;
 import br.com.trendsoftware.mlProvider.service.OrderService;
+import br.com.trendsoftware.mlProvider.service.ShippingService;
 import br.com.trendsoftware.restProvider.exception.MessageException;
 import br.com.trendsoftware.restProvider.exception.ProviderException;
 import br.com.trendsoftware.restProvider.exception.ServiceException;
@@ -30,6 +32,8 @@ public class OrderProvider extends MlProvider{
 	private OrderService orderService;
 	
 	private ItemService itemService;
+	
+	private ShippingService shippingService;
 
 	public OrderProvider(){
 		initializeService();
@@ -40,6 +44,7 @@ public class OrderProvider extends MlProvider{
 		
 		orderService = new OrderService();
 		itemService = new ItemService();
+		shippingService = new ShippingService();
 	}
 	
 	public Response searchOrderById(String orderId, String accessToken) throws ProviderException {
@@ -70,6 +75,7 @@ public class OrderProvider extends MlProvider{
 			Order order = getParser().fromJson(response.getBody(), Order.class);
 			
 			setOrderItensCompletedInfo(order, accessToken);
+			setOrderShippingInfo(order, accessToken);
 			
 			response.setData(order);
 
@@ -235,6 +241,13 @@ public class OrderProvider extends MlProvider{
 			orderItem.setItem(item);		
 		}
 	
+	}
+	
+	private void setOrderShippingInfo(Order order, String accessToken) throws ServiceException, JsonSyntaxException, IOException{
+		String shippingId = order.getShipping().getId().toString();
+		com.ning.http.client.Response rawResponse = shippingService.getShippingById(shippingId, accessToken);
+		Shipping shipping = getParser().fromJson(rawResponse.getResponseBody(), Shipping.class);
+		order.setShipping(shipping);
 	}
 
 	public void setOrderService(OrderService orderService) {

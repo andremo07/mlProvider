@@ -246,15 +246,15 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public Double getTotalAmountWithShipping() {
-        return totalAmountWithShipping;
-    }
+    public Double getTotal_amount_with_shipping() {
+		return totalAmountWithShipping;
+	}
 
-    public void setTotalAmountWithShipping(Double totalAmountWithShipping) {
-        this.totalAmountWithShipping = totalAmountWithShipping;
-    }
+	public void setTotal_amount_with_shipping(Double totalAmountWithShipping) {
+		this.totalAmountWithShipping = totalAmountWithShipping;
+	}
 
-    public Double getPaidAmount() {
+	public Double getPaidAmount() {
         return paidAmount;
     }
 
