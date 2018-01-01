@@ -3,7 +3,7 @@ package br.com.trendsoftware.mlProvider.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserToken {
+public class UserCredencials {
 	
 	@SerializedName("access_token")
 	@Expose
@@ -29,7 +29,7 @@ public class UserToken {
 	@Expose
 	private String tokenType;
 	
-	public UserToken(){
+	public UserCredencials(){
 		
 	}
 		

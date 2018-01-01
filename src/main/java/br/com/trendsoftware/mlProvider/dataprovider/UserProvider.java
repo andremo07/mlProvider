@@ -6,7 +6,7 @@ import org.apache.commons.httpclient.HttpStatus;
 
 import br.com.trendsoftware.mlProvider.dto.Error;
 import br.com.trendsoftware.mlProvider.dto.User;
-import br.com.trendsoftware.mlProvider.dto.UserToken;
+import br.com.trendsoftware.mlProvider.dto.UserCredencials;
 import br.com.trendsoftware.mlProvider.exception.AuthorizationException;
 import br.com.trendsoftware.mlProvider.response.Response;
 import br.com.trendsoftware.mlProvider.service.UserService;
@@ -51,7 +51,7 @@ public class UserProvider extends MlProvider{
 			
 			Response response = Response.getPrototype(rawResponse, after - before);
 			
-			UserToken token = getParser().fromJson(response.getBody(), UserToken.class);
+			UserCredencials token = getParser().fromJson(response.getBody(), UserCredencials.class);
 			
 			response.setData(token);
 
@@ -93,7 +93,7 @@ public class UserProvider extends MlProvider{
 			
 			Response response = Response.getPrototype(rawResponse, after - before);
 			
-			UserToken token = getParser().fromJson(response.getBody(), UserToken.class);
+			UserCredencials token = getParser().fromJson(response.getBody(), UserCredencials.class);
 			
 			response.setData(token);
 
