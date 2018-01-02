@@ -22,6 +22,7 @@ import br.com.trendsoftware.mlProvider.response.Response;
 import br.com.trendsoftware.mlProvider.service.ItemService;
 import br.com.trendsoftware.mlProvider.service.OrderService;
 import br.com.trendsoftware.mlProvider.service.ShippingService;
+import br.com.trendsoftware.mpProvider.service.PaymentService;
 import br.com.trendsoftware.restProvider.exception.MessageException;
 import br.com.trendsoftware.restProvider.exception.ProviderException;
 import br.com.trendsoftware.restProvider.exception.ServiceException;
@@ -41,7 +42,6 @@ public class OrderProvider extends MlProvider{
 	
 	@Override
 	protected void initializeService() {
-		
 		orderService = new OrderService();
 		itemService = new ItemService();
 		shippingService = new ShippingService();
@@ -123,8 +123,11 @@ public class OrderProvider extends MlProvider{
 			OrderList orderList = getParser().fromJson(response.getBody(), OrderList.class);
 			
 			List<Order> orders = orderList.getOrders();
-			for(Order order: orders)
+			
+			for(Order order: orders){
 				setOrderItensCompletedInfo(order, accessToken);
+				setOrderShippingInfo(order, accessToken);
+			}
 			
 			response.setData(orderList);
 
@@ -168,8 +171,10 @@ public class OrderProvider extends MlProvider{
 			OrderList orderList = getParser().fromJson(response.getBody(), OrderList.class);
 			
 			List<Order> orders = orderList.getOrders();
-			for(Order order: orders)
+			for(Order order: orders){
 				setOrderItensCompletedInfo(order, accessToken);
+				setOrderShippingInfo(order, accessToken);
+			}
 			
 			response.setData(orderList);
 
@@ -213,8 +218,10 @@ public class OrderProvider extends MlProvider{
 			OrderList orderList = getParser().fromJson(response.getBody(), OrderList.class);
 			
 			List<Order> orders = orderList.getOrders();
-			for(Order order: orders)
+			for(Order order: orders){
 				setOrderItensCompletedInfo(order, accessToken);
+				setOrderShippingInfo(order, accessToken);
+			}
 			
 			response.setData(orderList);
 
