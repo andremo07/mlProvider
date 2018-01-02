@@ -22,7 +22,6 @@ import br.com.trendsoftware.mlProvider.response.Response;
 import br.com.trendsoftware.mlProvider.service.ItemService;
 import br.com.trendsoftware.mlProvider.service.OrderService;
 import br.com.trendsoftware.mlProvider.service.ShippingService;
-import br.com.trendsoftware.mpProvider.service.PaymentService;
 import br.com.trendsoftware.restProvider.exception.MessageException;
 import br.com.trendsoftware.restProvider.exception.ProviderException;
 import br.com.trendsoftware.restProvider.exception.ServiceException;
