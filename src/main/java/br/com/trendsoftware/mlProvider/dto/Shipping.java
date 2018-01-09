@@ -82,7 +82,7 @@ public class Shipping {
     private String marketPlace;
     @SerializedName("return_details")
     @Expose
-    private String returnDetails;
+    private ReturnDetails returnDetails;
     @SerializedName("return_tracking_number")
     @Expose
     private String returnTrackingNumber;
@@ -285,11 +285,11 @@ public class Shipping {
         this.marketPlace = marketPlace;
     }
 
-    public String getReturnDetails() {
+    public ReturnDetails getReturnDetails() {
         return returnDetails;
     }
 
-    public void setReturnDetails(String returnDetails) {
+    public void setReturnDetails(ReturnDetails returnDetails) {
         this.returnDetails = returnDetails;
     }
 
