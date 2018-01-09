@@ -8,35 +8,35 @@ public class Ratings {
 
     @SerializedName("positive")
     @Expose
-    private Integer positive;
+    private Double positive;
     @SerializedName("negative")
     @Expose
-    private Integer negative;
+    private Double negative;
     @SerializedName("neutral")
     @Expose
-    private Integer neutral;
+    private Double neutral;
 
-    public Integer getPositive() {
+    public Double getPositive() {
         return positive;
     }
 
-    public void setPositive(Integer positive) {
+    public void setPositive(Double positive) {
         this.positive = positive;
     }
 
-    public Integer getNegative() {
+    public Double getNegative() {
         return negative;
     }
 
-    public void setNegative(Integer negative) {
+    public void setNegative(Double negative) {
         this.negative = negative;
     }
 
-    public Integer getNeutral() {
+    public Double getNeutral() {
         return neutral;
     }
 
-    public void setNeutral(Integer neutral) {
+    public void setNeutral(Double neutral) {
         this.neutral = neutral;
     }
 
