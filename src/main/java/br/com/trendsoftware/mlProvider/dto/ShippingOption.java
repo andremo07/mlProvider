@@ -23,7 +23,7 @@ public class ShippingOption {
     private Double cost;
     @SerializedName("speed")
     @Expose
-    private Object speed;
+    private Speed speed;
 
     public String getId() {
         return id;
@@ -69,7 +69,7 @@ public class ShippingOption {
         return speed;
     }
 
-    public void setSpeed(Object speed) {
+    public void setSpeed(Speed speed) {
         this.speed = speed;
     }
 
