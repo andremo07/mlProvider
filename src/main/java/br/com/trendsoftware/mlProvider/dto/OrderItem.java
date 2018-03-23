@@ -15,6 +15,9 @@ public class OrderItem {
     @SerializedName("unit_price")
     @Expose
     private Double unitPrice;
+    @SerializedName("sale_fee")
+    @Expose
+    private Double saleFee;
     @SerializedName("currency_id")
     @Expose
     private String currencyId;
@@ -51,4 +54,11 @@ public class OrderItem {
         this.currencyId = currencyId;
     }
 
+	public Double getSaleFee() {
+		return saleFee;
+	}
+
+	public void setSaleFee(Double saleFee) {
+		this.saleFee = saleFee;
+	}
 }
