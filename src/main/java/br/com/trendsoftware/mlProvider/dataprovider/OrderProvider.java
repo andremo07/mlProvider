@@ -46,7 +46,7 @@ public class OrderProvider extends MlProvider{
 		shippingService = new ShippingService();
 	}
 	
-	public Response searchOrderById(String orderId, String accessToken) throws ProviderException {
+	public Response searchOrderById(String userId, String orderId, String accessToken) throws ProviderException {
 
 		try {
 
@@ -54,7 +54,7 @@ public class OrderProvider extends MlProvider{
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response rawResponse = orderService.getOrderById(orderId,accessToken);
+			com.ning.http.client.Response rawResponse = orderService.getOrderById(userId,orderId,accessToken);
 			
 			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
 				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
@@ -71,7 +71,8 @@ public class OrderProvider extends MlProvider{
 
 			Response<Order> response = Response.getPrototype(rawResponse, after - before);
 			
-			Order order = getParser().fromJson(response.getBody(), Order.class);
+			OrderList orderList = getParser().fromJson(response.getBody(), OrderList.class);
+			Order order = orderList.getOrders().get(0);
 			
 			setOrderItensCompletedInfo(order, accessToken);
 			setOrderShippingInfo(order, accessToken);
