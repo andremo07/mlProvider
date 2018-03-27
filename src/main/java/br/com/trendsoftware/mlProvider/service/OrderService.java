@@ -11,14 +11,16 @@ import br.com.trendsoftware.restProvider.exception.ServiceException;
 
 public class OrderService extends MlService{
 	
-	public Response getOrderById(String orderId,String accessToken) throws ServiceException{
+	public Response getOrderById(String sellerId,String orderId,String accessToken) throws ServiceException{
 
 		try {
 			FluentStringsMap params = new FluentStringsMap();
 			FluentCaseInsensitiveStringsMap headers = new FluentCaseInsensitiveStringsMap();
 			headers.add("x-format-new", "true");
 			params.add("access_token", accessToken);
-			Response response = meli.get("/orders/"+orderId,params,headers);
+			params.add("seller", sellerId);
+			params.add("id",orderId);
+			Response response = meli.get("/orders/search",params,headers);
 			return response;	
 		} catch (RestClientException e) {	
 			throw new ServiceException(String.format("%s:%s", MessageException.ERROR_QUERY_ORDER, e.getMessage()), e);
