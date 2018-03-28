@@ -19,7 +19,7 @@ public class OrderService extends MlService{
 			headers.add("x-format-new", "true");
 			params.add("access_token", accessToken);
 			params.add("seller", sellerId);
-			params.add("id",orderId);
+			params.add("q",orderId);
 			Response response = meli.get("/orders/search",params,headers);
 			return response;	
 		} catch (RestClientException e) {	
