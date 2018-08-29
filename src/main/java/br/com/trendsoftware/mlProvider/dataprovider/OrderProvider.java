@@ -29,32 +29,17 @@ import br.com.trendsoftware.restProvider.util.ExceptionUtil;
 
 public class OrderProvider extends MlProvider{
 
-	private OrderService orderService;
-
-	private ItemService itemService;
-
-	private ShippingService shippingService;
-
-	public OrderProvider(){
-		initializeService();
-	}
-
-	@Override
-	protected void initializeService() {
-		orderService = new OrderService();
-		itemService = new ItemService();
-		shippingService = new ShippingService();
-	}
-
 	public Response searchOrderById(String userId, String orderId, String accessToken) throws ProviderException {
 
 		try {
 
 			getLogger().trace("searching order by id="+orderId);
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response rawResponse = orderService.getOrderById(userId,orderId,accessToken);
+			org.asynchttpclient.Response rawResponse = orderService.getOrderById(userId,orderId,accessToken);
 
 			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
 				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
@@ -96,6 +81,8 @@ public class OrderProvider extends MlProvider{
 		try {
 
 			getLogger().trace("searching orders from "+fromDt+" to "+toDate);
+			
+			OrderService orderService = new OrderService();
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 			String fromDtString = dateFormat.format(fromDt);
@@ -103,7 +90,7 @@ public class OrderProvider extends MlProvider{
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response rawResponse = orderService.getOrdersByDate(sellerId,fromDtString,toDateString,orderStatus.getName(),offset.toString(), limit.toString(),accessToken);
+			org.asynchttpclient.Response rawResponse = orderService.getOrdersByDate(sellerId,fromDtString,toDateString,orderStatus.getName(),offset.toString(), limit.toString(),accessToken);
 
 			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
 				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
@@ -148,10 +135,12 @@ public class OrderProvider extends MlProvider{
 		try {
 
 			getLogger().trace("searching "+ shippingStatus.getName() + " orders");
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response rawResponse = orderService.getOrdersByShippingStatus(sellerId,shippingStatus.getName(),shippingSubStatus.getName(),offset.toString(), limit.toString(),accessToken);
+			org.asynchttpclient.Response rawResponse = orderService.getOrdersByShippingStatus(sellerId,shippingStatus.getName(),shippingSubStatus.getName(),offset.toString(), limit.toString(),accessToken);
 
 			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
 				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
@@ -197,8 +186,10 @@ public class OrderProvider extends MlProvider{
 			getLogger().trace("searching recent orders");
 
 			long before = System.currentTimeMillis();
+			
+			OrderService orderService = new OrderService();
 
-			com.ning.http.client.Response rawResponse = orderService.getRecentOrders(sellerId,accessToken);
+			org.asynchttpclient.Response rawResponse = orderService.getRecentOrders(sellerId,accessToken);
 
 			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
 				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
@@ -238,11 +229,11 @@ public class OrderProvider extends MlProvider{
 	}
 
 	private void setOrderItensCompletedInfo(Order order, String accessToken) throws ServiceException, JsonSyntaxException, IOException{
-
+		ItemService itemService = new ItemService();
 		List<OrderItem> ordemItens = order.getOrderItems();
 		for(OrderItem orderItem: ordemItens){	
 			String sku = orderItem.getItem().getSellerCustomField();
-			com.ning.http.client.Response rawResponse = itemService.getItemById(orderItem.getItem().getId(), accessToken);
+			org.asynchttpclient.Response rawResponse = itemService.getItemById(orderItem.getItem().getId(), accessToken);
 			ItemResponse item  = getParser().fromJson(rawResponse.getResponseBody(), ItemResponse.class);
 			item.setSellerCustomField(sku);
 			orderItem.setItem(item);		
@@ -251,16 +242,12 @@ public class OrderProvider extends MlProvider{
 	}
 
 	private void setOrderShippingInfo(Order order, String accessToken) throws ServiceException, JsonSyntaxException, IOException{
+		ShippingService shippingService = new ShippingService();
 		if(order.getShipping().getId()!=null){
 			String shippingId = order.getShipping().getId().toString();
-			com.ning.http.client.Response rawResponse = shippingService.getShippingById(shippingId, accessToken);
+			org.asynchttpclient.Response rawResponse = shippingService.getShippingById(shippingId, accessToken);
 			Shipping shipping = getParser().fromJson(rawResponse.getResponseBody(), Shipping.class);
 			order.setShipping(shipping);
 		}
 	}
-
-	public void setOrderService(OrderService orderService) {
-		this.orderService = orderService;
-	}
-
 }

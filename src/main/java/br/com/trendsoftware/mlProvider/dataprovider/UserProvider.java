@@ -17,26 +17,17 @@ import br.com.trendsoftware.restProvider.util.ExceptionUtil;
 
 public class UserProvider extends MlProvider{
 
-	private UserService userService;
-	
-	public UserProvider(){
-		initializeService();
-	}
-	
-	@Override
-	protected void initializeService() {
-		userService = new UserService();
-	}
-
 	public Response login(Long clientId, String clientSecret, String code, String redirectUri) throws ProviderException{
 		
 		try {
 
 			getLogger().trace("searching user info");
+			
+			UserService userService = new UserService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response rawResponse = userService.authorize(String.valueOf(clientId),clientSecret,code,redirectUri);
+			org.asynchttpclient.Response rawResponse = userService.authorize(String.valueOf(clientId),clientSecret,code,redirectUri);
 
 			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
 				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
@@ -75,10 +66,12 @@ public class UserProvider extends MlProvider{
 		try {
 
 			getLogger().trace("searching user info");
+			
+			UserService userService = new UserService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response rawResponse = userService.refreshAccessToken(String.valueOf(clientId),clientSecret,refreshToken);
+			org.asynchttpclient.Response rawResponse = userService.refreshAccessToken(String.valueOf(clientId),clientSecret,refreshToken);
 
 			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
 				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
@@ -117,10 +110,12 @@ public class UserProvider extends MlProvider{
 		try {
 
 			getLogger().trace("searching user info");
+			
+			UserService userService = new UserService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response rawResponse = userService.getUserInfo(accessToken);
+			org.asynchttpclient.Response rawResponse = userService.getUserInfo(accessToken);
 
 			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
 				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){

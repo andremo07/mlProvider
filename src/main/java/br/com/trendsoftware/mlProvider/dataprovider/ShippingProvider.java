@@ -19,27 +19,17 @@ import br.com.trendsoftware.restProvider.util.ExceptionUtil;
 
 public class ShippingProvider extends MlProvider{
 
-	private ShippingService shippingService;
-
-	public ShippingProvider(){
-		initializeService();
-	}
-
-	@Override
-	protected void initializeService() {
-
-		shippingService = new ShippingService();
-	}
-
 	public Response searchShippingById(String shippingId,String accessToken) throws ProviderException{
 
 		try {
 
 			getLogger().trace("searching user info");
+			
+			ShippingService shippingService = new ShippingService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response response = shippingService.getShippingById(shippingId,accessToken);
+			org.asynchttpclient.Response response = shippingService.getShippingById(shippingId,accessToken);
 
 			if(response.getStatusCode()!=HttpStatus.SC_OK){
 				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
@@ -72,8 +62,10 @@ public class ShippingProvider extends MlProvider{
 		try {
 
 			getLogger().trace("printing shipping tags");
+			
+			ShippingService shippingService = new ShippingService();
 
-			com.ning.http.client.Response response = shippingService.getShippingTags(listShippingIds, accessToken);
+			org.asynchttpclient.Response response = shippingService.getShippingTags(listShippingIds, accessToken);
 
 			if(response.getStatusCode()!=HttpStatus.SC_OK)
 				throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
@@ -85,10 +77,6 @@ public class ShippingProvider extends MlProvider{
 		catch (ServiceException e) {
 			getLogger().error(ExceptionUtil.getStackTrace(e));
 			throw new ProviderException(MessageException.GENERAL_ERROR);
-		} 
-		catch (IOException e) {
-			getLogger().error(ExceptionUtil.getStackTrace(e));
-			throw new ProviderException(MessageException.BODY_RESPONSE_ERROR);
 		}
 
 	}
@@ -99,8 +87,10 @@ public class ShippingProvider extends MlProvider{
 		try {
 
 			getLogger().trace("searching municipy code of cep "+cep.toString());
+			
+			ShippingService shippingService = new ShippingService();
 
-			com.ning.http.client.Response response = shippingService.getMunicipyCodeByCep(cep);
+			org.asynchttpclient.Response response = shippingService.getMunicipyCodeByCep(cep);
 
 			if(response.getStatusCode()!=HttpStatus.SC_OK){
 				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
@@ -121,17 +111,7 @@ public class ShippingProvider extends MlProvider{
 		catch (ServiceException e) {
 			getLogger().error(ExceptionUtil.getStackTrace(e));
 			throw new ProviderException(MessageException.GENERAL_ERROR);
-		} 
-		catch (IOException e) {
-			getLogger().error(ExceptionUtil.getStackTrace(e));
-			throw new ProviderException(MessageException.BODY_RESPONSE_ERROR);
 		}
 
 	}
-
-
-	public void setShippingService(ShippingService shippingService) {
-		this.shippingService = shippingService;
-	}
-
 }

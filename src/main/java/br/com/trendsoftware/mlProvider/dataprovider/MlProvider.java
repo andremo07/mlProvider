@@ -29,7 +29,4 @@ public abstract class MlProvider
 	public void setParser(Gson parser) {
 		this.parser = parser;
 	}
-	
-	protected abstract void initializeService();
-	
 }
