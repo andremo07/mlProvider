@@ -12,7 +12,7 @@ public class Response<T> extends RestResponse
 		return getStatusCode().equals(200);
 	}
 	
-	public static Response getPrototype(com.ning.http.client.Response response, Long timeLapsed) throws IOException
+	public static Response getPrototype(org.asynchttpclient.Response response, Long timeLapsed) throws IOException
 	{
 		Response mlReponse = new Response();
 		

@@ -1,13 +1,13 @@
 package br.com.trendsoftware.mlProvider.service;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.ning.http.client.FluentStringsMap;
-import com.ning.http.client.Response;
+import org.asynchttpclient.Response;
 
+import br.com.trendsoftware.mlProvider.http.client.MeliClient;
 import br.com.trendsoftware.mlProvider.http.client.ViaCepClient;
 import br.com.trendsoftware.restProvider.exception.MessageException;
 import br.com.trendsoftware.restProvider.exception.RestClientException;
@@ -24,9 +24,9 @@ public class ShippingService extends MlService{
 	public Response getShippingById(String shippingId, String accessToken)throws ServiceException{
 
 		try {
-			FluentStringsMap params = new FluentStringsMap();
-			params.add("access_token", accessToken);
-			Response response = meli.get("/shipments/"+shippingId,params);
+			Map<String,List<String>> params = new HashMap<String,List<String>>();
+			params.put("access_token", Collections.singletonList(accessToken));
+			Response response = MeliClient.get(MeliClient.API_URL,"/shipments/"+shippingId,params);
 			return response;	
 		} catch (RestClientException e) {	
 			throw new ServiceException(String.format("%s:%s", MessageException.ERROR_QUERY_SHIPPING_INFO, e.getMessage()), e);
@@ -37,9 +37,9 @@ public class ShippingService extends MlService{
 	public Response getShippingTags(List<String> listShippingIds, String accessToken)throws ServiceException{
 
 		try {
-			FluentStringsMap params = new FluentStringsMap();
-			params.add("access_token", accessToken);
-			params.add("savePdf", "Y");
+			Map<String,List<String>> params = new HashMap<String,List<String>>();
+			params.put("access_token", Collections.singletonList(accessToken));
+			params.put("savePdf", Collections.singletonList("Y"));
 			
 			StringBuilder shippingIds = new StringBuilder();
 			if(!listShippingIds.isEmpty()){
@@ -50,9 +50,9 @@ public class ShippingService extends MlService{
 					shippingIds.append(shippingId);
 				}
 			}
-			params.add("shipment_ids", shippingIds.toString());
+			params.put("shipment_ids", Collections.singletonList(shippingIds.toString()));
 			
-			Response response = meli.get("/shipment_labels",params);
+			Response response = MeliClient.get(MeliClient.API_URL,"/shipment_labels",params);
 			return response;	
 		} catch (RestClientException e) {	
 			throw new ServiceException(String.format("%s:%s", MessageException.ERROR_QUERY_SHIPPING_INFO, e.getMessage()), e);
@@ -63,7 +63,7 @@ public class ShippingService extends MlService{
 	public Response getMunicipyCodeByCep(String cep) throws ServiceException{
 
 		try {
-			return viaCepClient.get(String.format("/ws/%s/json/", cep));
+			return ViaCepClient.get(ViaCepClient.API_URL,String.format("/ws/%s/json/", cep));
 			
 		} catch (RestClientException e) {
 			throw new ServiceException(String.format("%s:%s", MessageException.ERROR_QUERY_MUNICIPY_CODE, e.getMessage()), e);

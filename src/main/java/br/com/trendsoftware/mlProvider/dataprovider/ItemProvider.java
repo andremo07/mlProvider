@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import org.apache.commons.httpclient.HttpStatus;
 
+import br.com.trendsoftware.mlProvider.dto.Error;
 import br.com.trendsoftware.mlProvider.dto.Item;
 import br.com.trendsoftware.mlProvider.dto.ItemResponse;
 import br.com.trendsoftware.mlProvider.dto.ItemStatus;
 import br.com.trendsoftware.mlProvider.dto.ItemUpdate;
 import br.com.trendsoftware.mlProvider.dto.ListingType;
-import br.com.trendsoftware.mlProvider.dto.Error;
 import br.com.trendsoftware.mlProvider.response.Response;
 import br.com.trendsoftware.mlProvider.service.ItemService;
 import br.com.trendsoftware.restProvider.exception.MessageException;
@@ -19,30 +19,18 @@ import br.com.trendsoftware.restProvider.response.RestResponse;
 import br.com.trendsoftware.restProvider.util.ExceptionUtil;
 
 public class ItemProvider extends MlProvider{
-
-	private ItemService itemService;
-	
-	public ItemProvider() {
-		
-		initializeService();
-		
-	}
-	
-	@Override
-	protected void initializeService() {
-	
-		itemService = new ItemService();
-	}
 	
 	public RestResponse listUserProducts(String sellerId, ItemStatus itenStatus,Integer offSet, String accessToken) throws ProviderException{
 
 		try {
 
 			getLogger().trace("searching user itens");
+			
+			ItemService itemService = new ItemService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response response = itemService.getItens(sellerId,itenStatus.getName(),offSet.toString(),accessToken);
+			org.asynchttpclient.Response response = itemService.getItens(sellerId,itenStatus.getName(),offSet.toString(),accessToken);
 
 			if(response.getStatusCode()!=HttpStatus.SC_OK){
 				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
@@ -75,10 +63,12 @@ public class ItemProvider extends MlProvider{
 		try {
 
 			getLogger().trace("searching item " + itemId);
+			
+			ItemService itemService = new ItemService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response response = itemService.getItemById(itemId,accessToken);
+			org.asynchttpclient.Response response = itemService.getItemById(itemId,accessToken);
 
 			if(response.getStatusCode()!=HttpStatus.SC_OK){
 				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
@@ -111,10 +101,12 @@ public class ItemProvider extends MlProvider{
 		try {
 
 			getLogger().trace("adding item");
+			
+			ItemService itemService = new ItemService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response response = itemService.add(getParser().toJson(item),accessToken);
+			org.asynchttpclient.Response response = itemService.add(getParser().toJson(item),accessToken);
 
 			if(response.getStatusCode()!=HttpStatus.SC_CREATED){
 				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
@@ -149,10 +141,12 @@ public class ItemProvider extends MlProvider{
 		try {
 
 			getLogger().trace("adding item");
+			
+			ItemService itemService = new ItemService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response response = itemService.update(idItem,getParser().toJson(item),accessToken);
+			org.asynchttpclient.Response response = itemService.update(idItem,getParser().toJson(item),accessToken);
 
 			if(response.getStatusCode()!=HttpStatus.SC_OK){
 				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
@@ -189,10 +183,12 @@ public class ItemProvider extends MlProvider{
 		try {
 
 			getLogger().trace("changing item listing type to "+ listingType.getName());
+			
+			ItemService itemService = new ItemService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response response = itemService.changeListingType(idItem,getParser().toJson(listingType.getName()),accessToken);
+			org.asynchttpclient.Response response = itemService.changeListingType(idItem,getParser().toJson(listingType.getName()),accessToken);
 
 			if(response.getStatusCode()!=HttpStatus.SC_OK){
 				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
@@ -227,10 +223,12 @@ public class ItemProvider extends MlProvider{
 		try {
 
 			getLogger().trace("changing item status to "+ status.getName());
+			
+			ItemService itemService = new ItemService();
 
 			long before = System.currentTimeMillis();
 
-			com.ning.http.client.Response response = itemService.update(idItem,getParser().toJson(status.getName()),accessToken);
+			org.asynchttpclient.Response response = itemService.update(idItem,getParser().toJson(status.getName()),accessToken);
 
 			if(response.getStatusCode()!=HttpStatus.SC_OK){
 				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
@@ -267,8 +265,10 @@ public class ItemProvider extends MlProvider{
 			getLogger().trace("validate item publishing");
 
 			long before = System.currentTimeMillis();
+			
+			ItemService itemService = new ItemService();
 
-			com.ning.http.client.Response response = itemService.validate(getParser().toJson(item),accessToken);
+			org.asynchttpclient.Response response = itemService.validate(getParser().toJson(item),accessToken);
 
 			if(response.getStatusCode()!=HttpStatus.SC_NO_CONTENT){
 				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
@@ -299,9 +299,4 @@ public class ItemProvider extends MlProvider{
 		}
 
 	}
-	
-	public void setItemService(ItemService itemService) {
-		this.itemService = itemService;
-	}
-
 }
