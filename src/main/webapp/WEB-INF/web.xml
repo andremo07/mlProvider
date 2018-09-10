@@ -4,9 +4,9 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 	<display-name>ML Provider</display-name>
-	<listener>
+<!-- 	<listener>
    		<listener-class>br.com.imusica.rbtServices.listener.Log4JListener</listener-class>
-	</listener>
+	</listener> -->
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
