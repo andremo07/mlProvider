@@ -1,6 +1,6 @@
 package br.com.trendsoftware.mlProvider.dataprovider;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 

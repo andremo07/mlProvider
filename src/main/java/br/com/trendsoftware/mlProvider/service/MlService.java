@@ -1,6 +1,6 @@
 package br.com.trendsoftware.mlProvider.service;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import br.com.trendsoftware.mlProvider.http.client.MeliClient;
 
