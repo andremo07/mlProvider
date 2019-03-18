@@ -8,13 +8,13 @@ public class CostComponents {
 
     @SerializedName("special_discount")
     @Expose
-    private Long specialDiscount;
+    private Double specialDiscount;
 
-    public Long getSpecialDiscount() {
+    public Double getSpecialDiscount() {
         return specialDiscount;
     }
 
-    public void setSpecialDiscount(Long specialDiscount) {
+    public void setSpecialDiscount(Double specialDiscount) {
         this.specialDiscount = specialDiscount;
     }
 
