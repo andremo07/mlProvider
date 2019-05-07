@@ -1,11 +1,14 @@
 package br.com.trendsoftware.mlProvider.dataprovider;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.httpclient.HttpStatus;
 
 import br.com.trendsoftware.mlProvider.dto.Error;
 import br.com.trendsoftware.mlProvider.dto.Item;
+import br.com.trendsoftware.mlProvider.dto.ItemList;
 import br.com.trendsoftware.mlProvider.dto.ItemResponse;
 import br.com.trendsoftware.mlProvider.dto.ItemStatus;
 import br.com.trendsoftware.mlProvider.dto.ItemUpdate;
@@ -24,28 +27,54 @@ public class ItemProvider extends MlProvider{
 
 		try {
 
-			getLogger().trace("searching user itens");
+			//getLogger().trace("searching user itens");
 			
 			ItemService itemService = new ItemService();
 
 			long before = System.currentTimeMillis();
 
-			org.asynchttpclient.Response response = itemService.getItens(sellerId,itenStatus.getName(),offSet.toString(),accessToken);
+			org.asynchttpclient.Response rawResponse = itemService.getItens(sellerId,itenStatus.getName(),offSet.toString(),accessToken);
 
-			if(response.getStatusCode()!=HttpStatus.SC_OK){
-				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
-					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
+				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(rawResponse.getResponseBody(), Error.class);
 					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
 				}
 				else
-					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
+					throw new ProviderException(rawResponse.getStatusCode()+"-"+rawResponse.getStatusText());
 			}
 
 			long after = System.currentTimeMillis();
+			
+			Response<ItemList> response = Response.getPrototype(rawResponse, after - before);
+			
+			ItemList itens = getParser().fromJson(response.getBody(), ItemList.class);
+			
+			List<String> itensIds = itens.getItenIds();
+			
+			Long total = itens.getPaging().getTotal();
+			
+			int offset = 50;
+			
+			while(offset<total) 
+			{
+				rawResponse = itemService.getItens(sellerId,itenStatus.getName(),offSet.toString(),accessToken);
+				response = Response.getPrototype(rawResponse, after - before);
+				itens = getParser().fromJson(response.getBody(), ItemList.class);
+				itensIds.addAll(itens.getItenIds());
+				offset = offset + 50;
+			}
+			
+			List<Item> ads =  new ArrayList<Item>();
 
-			getLogger().trace(response.toString());
+			itensIds.forEach(itemId -> {
+				Item item = searchItemById(itemId,accessToken);
+				ads.add(item);
+			});
+			
+			//getLogger().trace(response.toString());
 
-			return Response.getPrototype(response, after - before);
+			return Response.getPrototype(rawResponse, after - before);
 		}
 		catch (ServiceException e) {
 			getLogger().error(ExceptionUtil.getStackTrace(e));
@@ -58,7 +87,7 @@ public class ItemProvider extends MlProvider{
 
 	}
 	
-	public Response searchItemById(String itemId, String accessToken) throws ProviderException{
+	public Item searchItemById(String itemId, String accessToken) throws ProviderException{
 
 		try {
 
@@ -68,22 +97,26 @@ public class ItemProvider extends MlProvider{
 
 			long before = System.currentTimeMillis();
 
-			org.asynchttpclient.Response response = itemService.getItemById(itemId,accessToken);
+			org.asynchttpclient.Response rawResponse = itemService.getItemById(itemId,accessToken);
 
-			if(response.getStatusCode()!=HttpStatus.SC_OK){
-				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
-					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+			if(rawResponse.getStatusCode()!=HttpStatus.SC_OK){
+				if(rawResponse.getResponseBody()!=null && !rawResponse.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(rawResponse.getResponseBody(), Error.class);
 					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
 				}
 				else
-					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
+					throw new ProviderException(rawResponse.getStatusCode()+"-"+rawResponse.getStatusText());
 			}
 
 			long after = System.currentTimeMillis();
+			
+			Response<ItemList> response = Response.getPrototype(rawResponse, after - before);
+			
+			Item item = getParser().fromJson(response.getBody(), Item.class);
 
 			getLogger().trace(response.toString());
 
-			return Response.getPrototype(response, after - before);
+			return item;
 		}
 		catch (ServiceException e) {
 			getLogger().error(ExceptionUtil.getStackTrace(e));

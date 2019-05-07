@@ -65,7 +65,7 @@ public class UserProvider extends MlProvider{
 		
 		try {
 
-			getLogger().trace("searching user info");
+			//getLogger().trace("searching user info");
 			
 			UserService userService = new UserService();
 
@@ -90,7 +90,7 @@ public class UserProvider extends MlProvider{
 			
 			response.setData(token);
 
-			getLogger().trace(response.toString());
+			//getLogger().trace(response.toString());
 
 			return response;
 		}
