@@ -68,7 +68,13 @@ public class ItemProvider extends MlProvider{
 			List<Item> ads =  new ArrayList<Item>();
 
 			itensIds.forEach(itemId -> {
-				Item item = searchItemById(itemId,accessToken);
+				Item item = null;
+				try {
+					item = searchItemById(itemId,accessToken);
+				} catch (ProviderException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				ads.add(item);
 			});
 			

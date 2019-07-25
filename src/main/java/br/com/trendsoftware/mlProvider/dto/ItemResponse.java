@@ -149,6 +149,9 @@ public class ItemResponse {
     @SerializedName("seller_custom_field")
     @Expose
     private String sellerCustomField;
+    @SerializedName("seller_sku")
+    @Expose
+    private String sellerSku;
     @SerializedName("parent_item_id")
     @Expose
     private String parentItemId;
@@ -543,8 +546,16 @@ public class ItemResponse {
     public void setSellerCustomField(String sellerCustomField) {
         this.sellerCustomField = sellerCustomField;
     }
+    
+    public String getSellerSku() {
+		return sellerSku;
+	}
 
-    public String getParentItemId() {
+	public void setSellerSku(String sellerSku) {
+		this.sellerSku = sellerSku;
+	}
+
+	public String getParentItemId() {
         return parentItemId;
     }
 
