@@ -59,7 +59,7 @@ public class OrderProvider extends MlProvider{
 			OrderList orderList = getParser().fromJson(response.getBody(), OrderList.class);
 			Order order = orderList.getOrders().get(0);
 
-			setOrderItensCompletedInfo(order, accessToken);
+			//setOrderItensCompletedInfo(order, accessToken);
 			setOrderShippingInfo(order, accessToken);
 
 			response.setData(order);
@@ -112,7 +112,7 @@ public class OrderProvider extends MlProvider{
 			List<Order> orders = orderList.getOrders();
 
 			for(Order order: orders){
-				setOrderItensCompletedInfo(order, accessToken);
+				//setOrderItensCompletedInfo(order, accessToken);
 				setOrderShippingInfo(order, accessToken);
 			}
 
